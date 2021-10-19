@@ -10,11 +10,19 @@ func housingFund() {
 		320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320, 320,
 		300,
 		1560, 1560, 1560, 1560, 1560, 1560, 1560, 1560, 1560, 1560, 1560, // 11个月
-		//1560, 1560, 1560, 1560, 1560, 1560,
+		//1560, 1560, 1560, //1560, 1560,
 	}
-	houseNew := life.HouseNew(data)
-	houseOld := life.HouseOld(data)
-	fmt.Printf("以前能贷公积金(%d)\n现在能贷公积金(%d)\n比以前少了(%d)", houseOld, houseNew, houseOld-houseNew)
+
+	fund := life.NewHosingFund(data, life.WithPrintNum(1))
+	houseNew := fund.HouseNew()
+	houseOld := fund.HouseOld()
+	moreUse, str := fund.MoreUse()
+	fmt.Printf("以前能贷公积金(%d)\n"+
+		"现在能贷公积金(%d)\n"+
+		"比以前少贷了(%d)\n"+
+		"额外利息增加了(%d)\n"+
+		"%s",
+		houseOld, houseNew, houseOld-houseNew, moreUse, str)
 }
 
 func main() {
