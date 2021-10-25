@@ -24,7 +24,3 @@ func housingFund() {
 		"%s",
 		houseOld, houseNew, houseOld-houseNew, moreUse, str)
 }
-
-func main() {
-	housingFund()
-}
