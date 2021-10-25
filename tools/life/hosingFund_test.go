@@ -19,11 +19,12 @@ func TestHouse(t *testing.T) {
 	}
 	for i, s := range tl {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			oldH := HouseOld(s.data)
+			fund := NewHosingFund(s.data)
+			oldH := fund.HouseOld()
 			if oldH != s.wantOld {
 				t.Errorf("data is (%+v) wantOld (%d) got (%d)", s.data, s.wantOld, oldH)
 			}
-			newH := HouseNew(s.data)
+			newH := fund.HouseNew()
 			if newH != s.wantNew {
 				t.Errorf("data is (%+v) wantNew (%d) got (%d)", s.data, s.wantOld, newH)
 			}

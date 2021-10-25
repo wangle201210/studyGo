@@ -15,6 +15,10 @@ type s2s struct {
 	sql   string
 	table string
 	rows  []row
+	// 备注的位置，默认在有边(可选择 top,right)
+	commentPos string
+	// 需不需要加gogo的json后缀
+	gogo bool
 }
 
 type row struct {
@@ -28,8 +32,16 @@ type row struct {
 	content string
 }
 
-func Sql2struct(sql string) (s *s2s) {
-	s = &s2s{sql: sql}
+type S2sOpt func(*s2s)
+
+func Sql2struct(sql string, opts ...S2sOpt) (s *s2s) {
+	s = &s2s{
+		sql:        sql,
+		commentPos: "right",
+	}
+	for _, opt := range opts {
+		opt(s)
+	}
 	s.getTableName()
 	s.getRows()
 	return
@@ -47,7 +59,7 @@ func (s *s2s) getRows() {
 		r := row{
 			content: a[0],
 			name:    a[1],
-			typ:     getType(a[2]),
+			typ:     a[2],
 			comment: filterComment(a[0]),
 		}
 		s.rows = append(s.rows, r)
@@ -84,8 +96,8 @@ func (s *s2s) getTableName() {
 	s.table = as[2]
 }
 
-func getType(s string) string {
-	if t, ok := typeMap[s]; ok {
+func getType(str string) string {
+	if t, ok := typeMap[str]; ok {
 		return t
 	}
 	return "string"
@@ -145,8 +157,9 @@ func (s *s2s) String() (str string) {
 	structResult := "type " + camelString(s.table) + " struct {"
 	var rows [][]string
 	for _, r := range s.rows {
+		// 字段名 + 字段类型 + 备注
 		row := []string{
-			camelString(r.name), r.typ,
+			camelString(r.name), getType(r.typ),
 		}
 		if len(r.comment) > 0 {
 			row = append(row, "//"+r.comment)
@@ -159,6 +172,7 @@ func (s *s2s) String() (str string) {
 	tw.SetRowLine(false)
 	tw.SetAutoWrapText(false)
 	tw.SetColumnSeparator("")
+	tw.SetAutoMergeCells(true)
 	tw.AppendBulk(rows)
 	tw.Render()
 	defineContent := buffer.String()
@@ -167,4 +181,10 @@ func (s *s2s) String() (str string) {
 	structResult += "\n" + buffer.String()
 	structResult += "}"
 	return structResult
+}
+
+func WithCommentPos(str string) S2sOpt {
+	return func(s *s2s) {
+		s.commentPos = str
+	}
 }
