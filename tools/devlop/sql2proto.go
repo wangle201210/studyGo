@@ -52,7 +52,7 @@ func (s *s2p) String() (str string) {
 	structResult := "message " + camelString(s.table) + " {"
 	buffer := bytes.NewBuffer(nil)
 	for _, r := range s.rows {
-		row := getProtoType(r.typ) + "\t" + camelString(r.name)
+		row := getProtoType(r.typ) + "\t" + camelString(r.name, true)
 		if s.gogo {
 			row += " " + fmt.Sprintf(gogoFmt, r.name)
 		}

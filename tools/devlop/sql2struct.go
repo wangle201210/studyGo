@@ -104,8 +104,12 @@ func getType(str string) string {
 }
 
 // camel string, xx_yy to XxYy
-func camelString(s string) string {
+func camelString(s string, lower ...bool) string {
 	data := make([]byte, 0, len(s))
+	l := false
+	if len(lower) > 0 {
+		l = lower[0]
+	}
 	j := false
 	k := false
 	num := len(s) - 1
@@ -115,7 +119,9 @@ func camelString(s string) string {
 			k = true
 		}
 		if d >= 'a' && d <= 'z' && (j || k == false) {
-			d = d - 32
+			if i != 0 || !l {
+				d = d - 32
+			}
 			j = false
 			k = true
 		}
@@ -172,7 +178,6 @@ func (s *s2s) String() (str string) {
 	tw.SetRowLine(false)
 	tw.SetAutoWrapText(false)
 	tw.SetColumnSeparator("")
-	tw.SetAutoMergeCells(true)
 	tw.AppendBulk(rows)
 	tw.Render()
 	defineContent := buffer.String()
