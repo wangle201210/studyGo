@@ -1,6 +1,6 @@
 package main
 
 func main() {
-	//housingFund()
-	sql2struct()
+	housingFund()
+	//sql2struct()
 }

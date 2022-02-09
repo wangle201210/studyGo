@@ -20,6 +20,8 @@ type HosingFund struct {
 	printNum int64
 	// 还款方式，默认等额本息
 	repayment int64
+	// 贷款总额
+	loan int64
 }
 
 func NewHosingFund(data []int64, opt ...HosingFundOption) *HosingFund {
@@ -38,7 +40,7 @@ func getDefault() *HosingFund {
 		maxHosingFund: 40 * 10000,
 		month:         30 * 12,
 		rateFond:      3.25 / 100 / 12,
-		rateBusiness:  6.125 / 100 / 12,
+		rateBusiness:  5.63 / 100 / 12,
 	}
 }
 
@@ -82,6 +84,12 @@ func WithRepayment(i int64) HosingFundOption {
 	}
 }
 
+func WithLoan(i int64) HosingFundOption {
+	return func(f *HosingFund) {
+		f.loan = i
+	}
+}
+
 // HouseOld 老算法 data 为每个月缴存的金额
 func (h *HosingFund) HouseOld() (sum int64) {
 	l := len(h.data)
@@ -108,23 +116,23 @@ func (h *HosingFund) HouseNew() (sum int64) {
 	return
 }
 
-// 等额本金
+// MoreUse 比以前多花的钱
 func (h *HosingFund) MoreUse() (more int64, str string) {
 	// 需要从公积金转为商贷的金额
 	houseMore := h.HouseOld() - h.HouseNew()
 	// 这些钱产生的额外利息
 	if h.repayment == 0 {
 		// 本息
-		more, str = h.interest(float64(houseMore))
+		more, str = h.interestMore(float64(houseMore))
 	} else {
 		// 本金
-		more, str = h.capital(float64(houseMore))
+		more, str = h.capitalMore(float64(houseMore))
 	}
 	return
 }
 
 // 等额本金
-func (h *HosingFund) capital(houseMore float64) (more int64, str string) {
+func (h *HosingFund) capitalMore(houseMore float64) (more int64, str string) {
 	mon := int(h.month)
 	printNum := int(h.printNum)
 	// 从基金转为商贷的 每个月金额 (按照整数算的，所以可能会有小数点的误差)
@@ -144,10 +152,10 @@ func (h *HosingFund) capital(houseMore float64) (more int64, str string) {
 	return
 }
 
-// 等额本息计算公式 m * (R*(1+R)^N)/((1+R)^N-1)
+// 等额本息（每月还款金额一致）计算公式 m * (R*(1+R)^N)/((1+R)^N-1)
 // 月还款本息=贷款总额×月利率×（1+月利率）的还款期数次方÷[(1+月利率)的还款期数次方-1]
 // 推导过程 http://www.baiozhuntuixing.com/p/103.html
-func (h *HosingFund) interest(m float64) (more int64, str string) {
+func (h *HosingFund) interestMore(m float64) (more int64, str string) {
 	N := float64(h.month)
 	powRF := math.Pow(1+h.rateFond, N)
 	powRB := math.Pow(1+h.rateBusiness, N)
@@ -161,4 +169,8 @@ func (h *HosingFund) interest(m float64) (more int64, str string) {
 		str += fmt.Sprintf("每月多还(%d)", int64(add))
 	}
 	return
+}
+
+func (h *HosingFund) interest() {
+
 }
