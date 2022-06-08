@@ -18,6 +18,8 @@ type HosingFund struct {
 	rateFond float64
 	// 商贷利率
 	rateBusiness float64
+	// 商贷最高时的利率，用来对比现在可以少还多少
+	rateMaxBusiness float64
 	// 打印的行数(方便查看)
 	printNum int64
 	// 还款方式，默认等额本息
@@ -43,7 +45,7 @@ func getDefault() *HosingFund {
 		maxHosingFund: 40 * 10000,
 		month:         30 * 12,
 		rateFond:      3.25 / 100 / 12,
-		rateBusiness:  5.63 / 100 / 12,
+		rateBusiness:  5.625 / 100 / 12,
 	}
 }
 
@@ -57,7 +59,7 @@ func WithMaxHosingFund(i int64) HosingFundOption {
 // WithData 第一个人的公积金缴纳情况
 func WithData(i []int64) HosingFundOption {
 	return func(f *HosingFund) {
-		f.data2 = i
+		f.data = i
 	}
 }
 
@@ -86,6 +88,13 @@ func WithRateFund(i float64) HosingFundOption {
 func WithRateBusiness(i float64) HosingFundOption {
 	return func(f *HosingFund) {
 		f.rateBusiness = i / 100 / 12
+	}
+}
+
+// WithRateMaxBusiness 需要比较的比较高的商贷利率
+func WithRateMaxBusiness(i float64) HosingFundOption {
+	return func(f *HosingFund) {
+		f.rateMaxBusiness = i / 100 / 12
 	}
 }
 
@@ -239,5 +248,12 @@ func (h *HosingFund) CapitalMonth() (res []float64) {
 		mall := mf + mb + everyFond + everyBusiness
 		res = append(res, mall)
 	}
+	return
+}
+
+func (h *HosingFund) InterestMaxReduceMonth() (now float64, old float64) {
+	now = h.InterestMonth()
+	h.rateBusiness = h.rateMaxBusiness
+	old = h.InterestMonth()
 	return
 }

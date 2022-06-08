@@ -6,7 +6,7 @@ import (
 )
 
 func sql2struct() {
-	sql := "CREATE TABLE `user_phone_auth` (\n  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,\n  `phone` varchar(11) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',\n  `med_privacy_agreement` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '医联app隐私协议：0 未读、1已读',\n  `created_at` int(10) unsigned NOT NULL DEFAULT '0',\n  `updated_at` int(10) unsigned DEFAULT '0',\n  PRIMARY KEY (`id`),\n  KEY `idx_phone` (`phone`)\n) ENGINE=InnoDB AUTO_INCREMENT=48560 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='手机号对应的一些权限';"
+	sql := "CREATE TABLE `broker_user` (\n  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,\n  `broker_user_id` int(11) unsigned NOT NULL COMMENT '经纪人用户ID',\n  `broker_user_type` tinyint(2) NOT NULL COMMENT '经纪人类型：1-直销 2-共建 3-兼职',\n  `mobile` varchar(11) NOT NULL COMMENT '手机号码',\n  `name` varchar(255) NOT NULL COMMENT '姓名',\n  `id_card_number` varchar(255) NOT NULL COMMENT '身份证号码',\n  `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '头像URL',\n  `status` tinyint(1) NOT NULL COMMENT '账号状态：1-启用 2-禁用',\n  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  `deleted_at` datetime DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  KEY `idx_broker_user_id` (`broker_user_id`) USING BTREE,\n  KEY `idx_idcard` (`id_card_number`(191)) USING BTREE\n) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COMMENT='经纪人用户'"
 	s := devlop.Sql2struct(sql)
 	str := s.String()
 	var (
@@ -30,4 +30,12 @@ func sql2struct() {
 	if _, err := f.WriteString(str); err != nil {
 		panic(err)
 	}
+}
+
+func modCheck() {
+	filename := "/Users/med/work/git/med-doctor-workstation/med-doctor-operation/go.mod"
+	d := &devlop.Mod{
+		FilePath: filename,
+	}
+	d.ModCheck()
 }
