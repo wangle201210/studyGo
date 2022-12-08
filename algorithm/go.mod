@@ -1,3 +1,3 @@
 module github.com/wangle201210/studyGo/algorithm
 
-go 1.15
+go 1.13

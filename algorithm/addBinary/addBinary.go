@@ -1,6 +1,8 @@
 package addBinary
 
-import "strconv"
+import (
+	"strconv"
+)
 
 func addBinary(a string, b string) string {
 	la, lb, carry := len(a)-1, len(b)-1, 0

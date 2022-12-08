@@ -7,4 +7,7 @@ require (
 	github.com/wangle201210/studyGo/tools v0.0.0-20211019050440-13eeac4ee302
 )
 
-replace github.com/wangle201210/studyGo/tools => /Users/med/mine/github/studyGo/tools
+replace (
+	github.com/wangle201210/studyGo/cmd => /Users/med/mine/github/studyGo/cmd
+	github.com/wangle201210/studyGo/tools => /Users/med/mine/github/studyGo/tools
+)
