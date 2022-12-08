@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package helloworld.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "kratos/api/helloworld/v1;v1";
+option java_multiple_files = true;
+option java_package = "dev.kratos.api.helloworld.v1";
+option java_outer_classname = "HelloworldProtoV1";
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc List (ListRequest) returns (ListReply) {
+    option (google.api.http) = {
+      get: "/list"
+    };
+  }
+}
+
+// The request message containing the user's name.
+message ListRequest {
+  int64 offset = 1;
+  int64 limit = 2;
+}
+
+// The response message containing the greetings
+message ListReply {
+  repeated Userinfo list = 1;
+}
+
+message Userinfo {
+  uint32 mid = 1;
+  string name = 2;
+  string sex = 3;
+  string face = 4;
+  uint32 archive = 5;
+  uint32 likes = 6;
+}

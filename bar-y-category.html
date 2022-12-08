@@ -1,0 +1,87 @@
+<!--
+	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=bar-y-category
+-->
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+<head>
+  <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+  <div id="container" style="height: 100%"></div>
+
+  
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+  <!-- Uncomment this line if you want to dataTool extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/extension/dataTool.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to use gl extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to echarts-stat extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to use map
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
+  -->
+  <!-- Uncomment these two lines if you want to use bmap extension
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=YOUR_API_KEY"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/extension/bmap.min.js"></script>
+  -->
+
+  <script type="text/javascript">
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, null, {
+      renderer: 'canvas',
+      useDirtyRect: false
+    });
+    var app = {};
+    
+    var option;
+
+    option = {
+  title: {
+    text: '百大粉丝排行榜'
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  legend: {},
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'value',
+    boundaryGap: [0, 0.01]
+  },
+  yAxis: {
+    type: 'category',
+    data: ["RAY的模型世界","oooooohmygosh","汪品先院士","稚晖君","朵朵花林","DarkCarrot","柳青瑶本尊","沙盘上的战争","o小庄o","凤凰传奇","远古黑金","取景框看世界","附魔星Fms","鹦鹉梨","#NAME?","朝烟今天唱歌了没","杨可爱Ukulele","利维坦mY","翠花不太脆","幾加乘","刘谦","二二酸酸","苏星河牛通","狂阿弥_","塑料叉FOKU","Vicky宣宣","熊乐乐大魔王","叔贵","火柴人AlanBecker","九三的耳朵不是特别好","小透明明TM","多多poi丶","zettaranc","好运的鱼","帅soserious","青莲又失利了","泠鸢yousa","嘉然今天吃什么","才疏学浅的才浅","大象放映室","香香软软的小泡芙","M木糖M","在下铁头阿彪","大碗拿铁","极客湾Geekerwan","MayTree五月树","和猫住","自来卷三木","阿特警官","森纳映画","导演小策","极速拍档","魔法Zc目录","影视飓风","老师好我叫何同学","一鹿有车","帕梅拉PamelaReif","倒悬的橘子","日食记","黑猫厨房","浑元Rysn","=咬人猫=","哦呼w","兔叭咯","宝剑嫂","星有野","画渣花小烙","拜托了小翔哥","水无月菌","啊吗粽","枪弹轨迹","泛式","EdmundDZhang","布锅锅","田野上的繁荣","花少北丶","大漠叔叔","无穷小亮的科普日常","大祥哥来了","小约翰可汗","罗翔说刑法","小文哥吃吃吃","硬核的半佛仙人","逍遥散人","某幻君","绵羊料理","我是郭杰瑞","盗月社食遇记","记录生活的蛋黄派","木鱼水心","小片片说大片","小潮院长","老番茄"],
+    axisLabel: {
+      interval:0,
+      rotate:30,
+    }
+  },
+  series: [
+    {
+      name: '2021',
+      type: 'bar',
+      data: [30852717,37223688,42126506,42446350,49084552,58258860,65201375,74458909,74927653,80570336,81094241,85127353,89234978,90686060,91441730,95506748,97025428,97109964,97653397,98888000,99740628,101527276,103031590,105452489,111157606,112247975,121018594,129294443,132110114,134561498,134692011,135102992,135396752,140786769,142219250,143408972,143983949,147409310,149002491,158393379,179064268,183094955,192439066,201839096,202067133,224832274,251124802,266801931,274848046,279121643,281986086,287078342,302696827,317151717,321847161,323996118,330823276,352726162,359146139,367034593,376268771,376890864,379948460,384637698,388853916,393761165,393964501,400555221,434358094,463205746,479611577,507568146,527460934,565689184,581519629,588533944,590728852,620790989,634859742,661563081,697212913,729503776,733153505,737985653,788855770,922369667,924580473,1093394238,1154266449,1208103393,1216388052,1582489737,2341871242]
+    }
+  ]
+};
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+  </script>
+</body>
+</html>

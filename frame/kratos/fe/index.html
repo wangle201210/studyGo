@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+<div id="app">
+    <template>
+        <el-card :style="maxHeight" class="box-card">
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+                <div style="width: 100%;height: 40px;margin-left: 40%">
+                    <el-tag>{{title}}</el-tag>
+                </div>
+                <el-tab-pane label="2021百大UP播放量排行榜" name="imitate">
+                    <div id="box"  style="width: 100%; height: 500px"></div>
+                </el-tab-pane>
+            </el-tabs>
+        </el-card>
+    </template>
+</div>
+</body>
+<!-- import Vue before Element -->
+<script src="static/js/vue.js"></script>
+<!-- import JavaScript -->
+<script src="static/js/index.js"></script>
+<script src="static/js/http.js"></script>
+<script src="static/js/echarts.js"></script>
+<script src="static/js/lodash.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                fullHeight: document.documentElement.clientHeight - 20,
+                activeName: 'imitate',
+                idcard: '',
+                salary: '',
+                social: 0,
+                zx: 0,
+                info_show: false,
+                err_show: false,
+                url: '',
+                region: {
+                    addr: '',
+                    brith: '',
+                    gender: '',
+                    err: '',
+                },
+                tax: {
+                    new_more: 0,
+                    new_should: 0,
+                    new_tax: 0,
+                    old_should: 0,
+                    old_tax: 0,
+                },
+                loading: false,
+                limit:1,
+                start:0,
+                nameList: [],
+                viewList: [],
+                chartDom: null,
+                showCount: 9,
+                timeUp: 3000,
+                title: "排名情况",
+                allCount:99,
+                color: ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+            }
+        },
+        computed: {
+            maxHeight: function () {
+                return {
+                    'height': this.fullHeight + 'px',
+                    'overflow':'auto',
+                    'overflow-x': 'hidden'
+                }
+            }
+        },
+        mounted () {
+            this.nameList = []
+            this.viewList = []
+            this.chartDom = echarts.init(document.getElementById('box'))
+            this.timer = setInterval(() => {
+                this.getData();
+            }, this.timeUp )
+        },
+        created () {
+            this.init()
+        },
+        methods: {
+            handleClick(tab, event) {
+                this.init()
+            },
+            getData() {
+                const that = this
+                if (this.start > 100) {
+                    return
+                }
+                this.$http.get('http://127.0.0.1:8088/list?limit='+this.limit +"&offset="+this.start).then(function(res){
+                    console.log(res.body.list);
+                    console.log(that.limit,that.start,that.title)
+                    _.forEach(res.body.list, function (v, k) {
+                        that.title = "第" + (that.allCount - that.start + 2) + "名: " +v.name
+                        let c =  (v.archive / 10000).toFixed(0).toString()
+                        if (c > 10000) {
+                            c = (v.archive / 10000/ 10000).toFixed(2).toString()
+                            that.title = that.title + "-" + c +"亿"
+                        } else {
+                            that.title = that.title + "-" + c +"万"
+                        }
+                        that.nameList = _.concat(that.nameList, v.name)
+                        that.viewList = _.concat(that.viewList, v.archive)
+                    })
+                    that.nameList = _.drop(that.nameList, that.nameList.length - this.showCount)
+                    that.viewList = _.drop(that.viewList, that.viewList.length - this.showCount)
+                    if (that.nameList.length >= that.showCount) {
+                        let h = _.head(that.color)
+                        let old = _.takeRight(that.color, 8)
+                        that.color = _.concat(old,h)
+                        console.log(that.color);
+                    }
+                },function(res){
+                    console.log(res.status);
+                });
+                this.start +=1
+                const option = {
+                    title: {
+                        // text: '2021百大播放量排行榜'
+                    },
+                    label: {
+                        show: false,
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    grid: {
+                        left: '100px',
+                        right: '50px',
+                        bottom: '50px',
+                        // containLabel: true
+                    },
+                    xAxis: {
+                        max: 'dataMax',
+                    },
+                    yAxis: {
+                        type: 'category',
+                        inverse: true,
+                        max: this.showCount,
+                        data: that.nameList,
+                        animationDuration: this.timeUp/10,
+                        animationDurationUpdate: this.timeUp/10,
+                        axisLabel: {
+                            interval: 0,
+                            rotate: 15,
+                        },
+                    },
+                    animationDuration: this.timeUp + 1000,
+                    animationDurationUpdate: this.timeUp,
+                    animationEasing: 'cubicInOut',
+                    animationEasingUpdate: 'quadraticOut',
+                    color:that.color,
+                    series: [
+                        {
+                            // realtimeSort: true,
+                            // name: this.title,
+                            type: 'bar',
+                            data: that.viewList,
+                            colorBy:'sever',
+                            label: {
+                                show: true,
+                                position: 'inside',
+                                valueAnimation: true,
+                                // color: '#ccc',
+                            },
+                            encode: {
+                                x: 0,
+                                y: 3
+                            },
+                            blur: {
+                                label: {
+                                    show: false,
+                                }
+                            }
+                        }
+                    ]
+                }
+                that.chartDom.setOption(option)
+            },
+            init() {
+                this.info_show = false
+                this.err_show = false
+            },
+            setChartOption() {
+
+            }
+        },
+        watch: {
+        }
+    })
+</script>
+<style type="text/css">
+    .box-card {
+        /*min-height: 500px;*/
+    }
+    .form {
+        margin-bottom: 10px;
+    }
+    .info {
+        background-color: #f3f3f380;
+    }
+    .info div {
+        margin: 5px;
+    }
+</style>
+</html>
