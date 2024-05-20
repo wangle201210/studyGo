@@ -31,3 +31,9 @@ func TestHouse(t *testing.T) {
 		})
 	}
 }
+
+func TestHouse2(t *testing.T) {
+	fund := NewHosingFund([]int64{})
+	more, str := fund.MoreUse()
+	println(more, str)
+}

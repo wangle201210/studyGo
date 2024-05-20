@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"math"
 	"strconv"
 	"strings"
@@ -17,43 +15,45 @@ type RequestAccess struct {
 }
 
 func main() {
+	// csvMerge()
+	// tikaDo()
 	housingFund()
 	return
-	//JsonDecode()
-	//return
-	//fmt.Println(decimalToAny(math.MaxInt64, 62))
-	//return
-	//devlop.Dns()
-	//var n1 []int
-	//n2 := []int{1, 2, 3}
-	//n3 := append(n1, n2...)
-	//fmt.Printf("%+v %d", n3, cap(n3))
-	//return
-	////birthDate:"1973\345\271\26410\346\234\2105\346\227\245"
-	//s := "{\"id\":1663301542005,\"content\":\"\346\265\267\345\206\2332:\346\273\264\346\273\264\",\"title\":\"\346\265\267\345\206\2332(\346\265\267\345\206\2332)\",\"extra\":\"\\/hospital\",\"targetId\":[60724675],\"pushExt\":null,\"channelId\":\"normal\"}"
-	s := "{\"name\":\"\351\203\255\345\273\272\346\230\216\"}"
-	r := make(map[string]interface{})
-	err := json.Unmarshal([]byte(s), &r)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("%+v", r)
-	return
-	//var a = -9223372036854775808
-	//var b uint = 18446744073709551615
+	// JsonDecode()
+	// return
+	// fmt.Println(decimalToAny(math.MaxInt64, 62))
+	// return
+	// devlop.Dns()
+	// var n1 []int
+	// n2 := []int{1, 2, 3}
+	// n3 := append(n1, n2...)
+	// fmt.Printf("%+v %d", n3, cap(n3))
+	// return
+	// //birthDate:"1973\345\271\26410\346\234\2105\346\227\245"
+	// s := "{\"id\":1663301542005,\"content\":\"\346\265\267\345\206\2332:\346\273\264\346\273\264\",\"title\":\"\346\265\267\345\206\2332(\346\265\267\345\206\2332)\",\"extra\":\"\\/hospital\",\"targetId\":[60724675],\"pushExt\":null,\"channelId\":\"normal\"}"
+	// s := "{\"name\":\"\351\203\255\345\273\272\346\230\216\"}"
+	// r := make(map[string]interface{})
+	// err := json.Unmarshal([]byte(s), &r)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Printf("%+v", r)
+	// return
+	// var a = -9223372036854775808
+	// var b uint = 18446744073709551615
 	//
-	//fmt.Printf("a的类型为:[%T],a的值为:[%d]\n", a, a)
-	//fmt.Printf("b的类型为:[%T],b的值为:[%d]\n", b, b)
+	// fmt.Printf("a的类型为:[%T],a的值为:[%d]\n", a, a)
+	// fmt.Printf("b的类型为:[%T],b的值为:[%d]\n", b, b)
 
-	//s := "r=1&n=301&t=0&v=1"
-	//stringXml(&s)
-	//println(s)
-	//img2txt.Img2txt("/Users/med/Downloads/821646621584_.pic.png", 200, []string{"@", "#", "*", "%", "+", ",", ".", " "}, "\n", "./保存的文本.txt")
-	housingFund()
-	//sql2struct()
-	//modCheck()
-	//wechatDo()
-	//img2txt.Img()
+	// s := "r=1&n=301&t=0&v=1"
+	// stringXml(&s)
+	// println(s)
+	// img2txt.Img2txt("/Users/med/Downloads/821646621584_.pic.png", 200, []string{"@", "#", "*", "%", "+", ",", ".", " "}, "\n", "./保存的文本.txt")
+	// housingFund()
+	// sql2struct()
+	// modCheck()
+	// wechatDo()
+	// img2txt.Img()
 }
 
 var tenToAny map[int]string = map[int]string{0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8", 9: "9",
@@ -69,9 +69,9 @@ func decimalToAny(num, n int) string {
 	for num != 0 {
 		remainder = num % n
 		if 76 > remainder && remainder > 9 {
-			//1x2QluMLiT
-			//1x2ClZu|{iF
-			//aZl8N0y58M7
+			// 1x2QluMLiT
+			// 1x2ClZu|{iF
+			// aZl8N0y58M7
 			if remainder >= 36 {
 				remainder += 14
 			}

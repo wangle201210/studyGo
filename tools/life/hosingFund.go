@@ -44,7 +44,7 @@ func getDefault() *HosingFund {
 	return &HosingFund{
 		maxHosingFund: 40 * 10000,
 		month:         30 * 12,
-		rateFond:      3.25 / 100 / 12,
+		rateFond:      2.85 / 100 / 12,
 		rateBusiness:  5.625 / 100 / 12,
 	}
 }

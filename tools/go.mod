@@ -19,4 +19,4 @@ require (
 	gorm.io/plugin/dbresolver v1.3.0
 )
 
-replace github.com/wangle201210/studyGo/tools => /Users/wanna/mine/github/studyGo/tools
+//replace github.com/wangle201210/studyGo/tools => /Users/wanna/mine/github/studyGo/tools
