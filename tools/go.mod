@@ -8,11 +8,11 @@ require (
 	github.com/casbin/gorm-adapter/v3 v3.13.1
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-kratos/kratos v1.0.1
+	github.com/go-ldap/ldap/v3 v3.4.8 // indirect
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/lib/pq v1.10.7 // indirect
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/olekukonko/tablewriter v0.0.5
-	golang.org/x/sys v0.0.0-20220928140112-f11e5e49a4ec // indirect
 	gorm.io/driver/mysql v1.4.1
 	gorm.io/gen v0.3.16
 	gorm.io/gorm v1.24.0

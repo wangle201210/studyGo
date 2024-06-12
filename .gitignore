@@ -5,3 +5,7 @@
 /example/struct.txt
 /tools/bilibili/service/node_modules/
 /.idea/
+/tools/.idea/.gitignore
+/tools/.idea/modules.xml
+/tools/.idea/tools.iml
+/tools/.idea/vcs.xml
